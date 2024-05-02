@@ -31,8 +31,18 @@ const Room = () => {
   const [users, setUsers] = useState([])
 
   useEffect(() => {
+    fetch('api/room/join', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({roomId})
+    })
+  }, [roomId])
+
+  useEffect(() => {
     if (!socket || !peer || !stream) return;
-    const handleUserConnected = (newUser) => {
+    const handleUserConnected = (newUser: string) => {
       console.log(`user connected in room with userId ${newUser}`);
 
       const call = peer.call(newUser, stream);
@@ -63,7 +73,7 @@ const Room = () => {
 
   useEffect(() => {
     if (!socket) return;
-    const handleToggleAudio = (userId) => {
+    const handleToggleAudio = (userId: string) => {
       console.log(`user with id ${userId} toggled audio`);
       setPlayers((prev) => {
         const copy = cloneDeep(prev);
@@ -81,7 +91,7 @@ const Room = () => {
       });
     };
 
-    const handleUserLeave = (userId) => {
+    const handleUserLeave = (userId: string) => {
       console.log(`user ${userId} is leaving the room`);
       users[userId]?.close()
       const playersCopy = cloneDeep(players);

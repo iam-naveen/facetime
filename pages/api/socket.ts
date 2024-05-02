@@ -1,6 +1,7 @@
 import { Server } from "socket.io";
 
-const SocketHandler = (req, res) => {
+// @ts-expect-error - custom response type
+const SocketHandler = (_, res) => {
     console.log("called api")
     if (res.socket.server.io) {
         console.log("socket already running")
